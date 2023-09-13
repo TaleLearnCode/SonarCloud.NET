@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2023 Tale Learn Code
+Copyright (c) 2023 Chad Green (Tale Learn Code)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
