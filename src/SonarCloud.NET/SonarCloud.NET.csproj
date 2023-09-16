@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>11.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>TaleLearnCode.SonarCloudNet</RootNamespace>
+    <Copyright>Copyright © 2023 by Chad Green. All rights reserved.</Copyright>
+    <Authors>Chad Green</Authors>
+    <Company>Green Events and Technology</Company>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/TaleLearnCode/SonarCloud.NET</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/TaleLearnCode/SonarCloud.NET</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/TaleLearnCode/SonarCloud.NET/LICENSCE.md</PackageLicenseUrl>
+    <PackageTags>sonar, sonarcloud</PackageTags>
+    <Description>SonarCloud.NET is a robust, developer-friendly .NET library engineered to facilitate seamless communication with the SonarCloud web API. It empowers .NET developers and teams to effortlessly integrate SonarCloud's advanced code quality and security analysis capabilities into their .NET applications and workflows.</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>0.0.1-dev</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Text.Json" Version="7.0.3" />
+  </ItemGroup>
+
+</Project>

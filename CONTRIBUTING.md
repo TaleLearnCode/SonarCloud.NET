@@ -32,16 +32,6 @@ Some things that will increase the chance that your pull request is accepted:
 - If the change does break compatibility, how can it be updated to become backwards compatible, while directing user to the new way of doing things?
 - Your commits are associated with your GitHub user: https://help.github.com/articles/why-are-my-commits-linked-to-the-wrong-user/
 - Make pull requests against a feature branch
-- Follow our commit message conventions:
-  * Commit test files with `test: …` or `test(scope): …` prefix.
-  * Commit bug fixes with `fix: …` or `fix(scope): …` prefix
-  * Commit features with `feat: …` or `feat(scope): …` prefix
-  * Commit breaking changes by adding `BREAKING CHANGE:` in the commit body.
-    The commit subject does not matter. A commit can have multiple `BREAKING CHANGE:`
-    sections
-  * Commit changes to README files or comments with `docs(README): …`
-  * Code style changes with `style: standard`
-
 
 Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
 
