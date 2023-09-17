@@ -1,6 +1,9 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System.Net;
+using System.Net.Http.Headers;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
-namespace TaleLearnCode.SonarCloudNet.IntegrationsTests;
+namespace TaleLearnCode.SonarCloudNet.UnitTests;
 
 /// <summary>
 /// Represents the test fixture for the unit tests.
@@ -18,6 +21,21 @@ public class TestFixture : IDisposable
   public SonarCloudClient SonarCloudClient { get; }
 
   /// <summary>
+  /// Gets the HTTP message handler to be used by the tests.
+  /// </summary>
+  /// <value>The HTTP message handler to be used by the tests.</value>
+  public Mock<HttpMessageHandler> MockedHttpMessageHandler { get; }
+
+  //
+  public readonly JsonSerializerOptions JsonSerializerOptions = new()
+  {
+    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+    DictionaryKeyPolicy = JsonNamingPolicy.CamelCase
+  };
+
+
+  /// <summary>
   /// Gets the bearer token to be used by the tests.
   /// </summary>
   /// <value>The bearer token to be used by the tests.</value>
@@ -28,17 +46,17 @@ public class TestFixture : IDisposable
   /// </summary>
   public TestFixture()
   {
-
-    IConfiguration config = new ConfigurationBuilder()
-      .AddJsonFile("AppSettings.json")
-      .AddUserSecrets<TestFixture>() // Add this line to read user secrets
-      .Build();
-
-    SonarCloudClient = new();
-
-    BearerToken = config["BearerToken"];
-
+    MockedHttpMessageHandler = new Mock<HttpMessageHandler>();
+    BearerToken = Guid.NewGuid().ToString();
+    SonarCloudClient = new(new HttpClient(MockedHttpMessageHandler.Object), BearerToken);
   }
+
+  public HttpResponseMessage GenerateHttpResponseMessage<T>(T contentObject, HttpStatusCode httpStatusCode = HttpStatusCode.OK)
+    => new()
+    {
+      StatusCode = httpStatusCode,
+      Content = new StringContent(JsonSerializer.Serialize<T>(contentObject, JsonSerializerOptions), new MediaTypeWithQualityHeaderValue("application/json"))
+    };
 
   /// <summary>
   /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -54,11 +72,6 @@ public class TestFixture : IDisposable
   /// </summary>
   /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
   /// <returns><c>true</c> if the dispose is successful, <c>false</c> otherwise.</returns>
-  protected virtual bool Dispose(bool disposing)
-  {
-    if (disposing)
-      SonarCloudClient.Dispose();
-    return true;
-  }
+  protected virtual bool Dispose(bool disposing) => true;
 
 }
