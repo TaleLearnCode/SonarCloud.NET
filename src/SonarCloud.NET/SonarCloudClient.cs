@@ -1,5 +1,6 @@
 ﻿using System.Net.Http.Headers;
 using System.Text.Json.Serialization;
+using TaleLearnCode.SonarCloudNet.Exceptions;
 
 namespace TaleLearnCode.SonarCloudNet;
 
@@ -94,10 +95,24 @@ public partial class SonarCloudClient : IDisposable
   /// <param name="endpointRoute">The endpoint route.</param>
   /// <param name="bearerToken">The bearer token to be used for authentication.</param>
   /// <returns>A string representing the response from the SonarCloud Web API.</returns>
-  private async Task<string> GetAsync(string endpointRoute, string bearerToken)
+  private async Task<string> GetStringAsync(string endpointRoute, string bearerToken, Dictionary<string, string>? queryStringParams = null)
   {
     InitializeHttpClient(bearerToken);
-    return await _httpClient.GetStringAsync($"{_baseApiAddress}{endpointRoute}");
+    try
+    {
+      string queryString = string.Empty;
+      if (queryStringParams is not null)
+        queryString = $"?{string.Join("&", queryStringParams.Select(kvp => $"{kvp.Key}={kvp.Value}"))}";
+      return await _httpClient.GetStringAsync($"{_baseApiAddress}{endpointRoute}{queryString}");
+    }
+    catch (HttpRequestException ex) when (ex.Message.StartsWith("Response status code does not indicate success: 401"))
+    {
+      throw new UnauthorizedException(ex);
+    }
+    catch (HttpRequestException ex) when (ex.Message.StartsWith("Response status code does not indicate success: 429"))
+    {
+      throw new TooManyRequestsException(ex);
+    }
   }
 
   /// <summary>

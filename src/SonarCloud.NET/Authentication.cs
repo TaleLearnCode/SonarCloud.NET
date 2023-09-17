@@ -20,8 +20,8 @@ public partial class SonarCloudClient
   public async Task<bool> Validate(string bearerToken)
   {
     if (string.IsNullOrWhiteSpace(bearerToken)) throw new ArgumentNullException(nameof(bearerToken));
-    ValidateAuthenticationSonarResponse? sonarResponse
-      = JsonSerializer.Deserialize<ValidateAuthenticationSonarResponse>(await GetAsync(_route_Validate, bearerToken), _jsonSerializerOptions);
+    ValidateAuthenticationResponse? sonarResponse
+      = JsonSerializer.Deserialize<ValidateAuthenticationResponse>(await GetStringAsync(_route_Validate, bearerToken), _jsonSerializerOptions);
     return sonarResponse?.Valid ?? false;
   }
 
