@@ -5,13 +5,8 @@ public partial class SonarCloudClient
 
   private const string _route_Search = "users/search";
 
-  private const string _parameter_PageIndex = "p";
-  private const string _parameter_PageSize = "ps";
-  private const string _parameter_Query = "q";
-
-  private const int _defaultParameter_PageIndex = 1;
-  private const int _defaultParameter_PageSize = 50;
-  private const string? _defaultParameter_Query = null;
+  private const int _parameterDefault_UserSearch_PageSize = 50;
+  private const string? _parameterDefault_UserSearch_Query = null;
 
   /// <summary>
   /// Gets a list of active users with the specified search criteria.
@@ -35,7 +30,11 @@ public partial class SonarCloudClient
   /// <exception cref="ArgumentException">Thrown if the <paramref name="pageSize"/> is greater than 500 or the <paramref name="query"/> is less than 2 characters.</exception>
   /// <exception cref="UnauthorizedException">Thrown if the supplied bearer token is invalid or not authorized to perform the specified query.</exception>
   /// <exception cref="TooManyRequestsException">Thrown when attempting to make too many requests to the SonarCloud Web API within a specified time.</exception>
-  public async Task<UserSearchResponse?> UserSearch(string bearerToken, int pageIndex = 1, int pageSize = 50, string? query = _defaultParameter_Query)
+  public async Task<UserSearchResponse?> UserSearch(
+    string bearerToken,
+    int pageIndex = _parameterDefault_PageIndex,
+    int pageSize = _parameterDefault_UserSearch_PageSize,
+    string? query = _parameterDefault_UserSearch_Query)
   {
 
     if (string.IsNullOrWhiteSpace(bearerToken)) throw new ArgumentNullException(nameof(bearerToken));
@@ -43,9 +42,9 @@ public partial class SonarCloudClient
     if (query?.Length < 2) throw new ArgumentException($"The {nameof(query)} must be at least two characters in length.");
 
     Dictionary<string, string>? queryStringParams = null;
-    AddParameterToQueryString(ref queryStringParams, _parameter_PageIndex, pageIndex.ToString(), _defaultParameter_PageIndex.ToString());
-    AddParameterToQueryString(ref queryStringParams, _parameter_PageSize, pageSize.ToString(), _defaultParameter_PageSize.ToString());
-    AddParameterToQueryString(ref queryStringParams, _parameter_Query, query, _defaultParameter_Query);
+    AddParameterToQueryStringDictionary(ref queryStringParams, _parameterName_PageIndex, pageIndex.ToString(), _parameterDefault_PageIndex.ToString());
+    AddParameterToQueryStringDictionary(ref queryStringParams, _parameterName_PageSize, pageSize.ToString(), _parameterDefault_UserSearch_PageSize.ToString());
+    AddParameterToQueryStringDictionary(ref queryStringParams, _parameterName_Query, query, _parameterDefault_UserSearch_Query);
 
     UserSearchResponse? sonarResponse = JsonSerializer.Deserialize<UserSearchResponse>(await GetStringAsync(_route_Search, bearerToken, queryStringParams), _jsonSerializerOptions);
 
@@ -53,16 +52,4 @@ public partial class SonarCloudClient
 
   }
 
-  private static void AddParameterToQueryString(
-    ref Dictionary<string, string>? queryStringParams,
-    string parameterKey,
-    string? parameterValue,
-    string? defaultValue)
-  {
-    if (parameterValue is not null && parameterValue != defaultValue)
-    {
-      queryStringParams ??= new();
-      queryStringParams.Add(parameterKey, parameterValue);
-    }
-  }
 }

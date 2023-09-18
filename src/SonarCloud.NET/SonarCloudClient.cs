@@ -17,6 +17,13 @@ public partial class SonarCloudClient : IDisposable
 
   private const string _baseApiAddress = "https://sonarcloud.io/api/";
 
+  private const string _parameterName_PageIndex = "p";
+  private const string _parameterName_PageSize = "ps";
+  private const string _parameterName_Query = "q";
+
+  private const int _parameterDefault_PageIndex = 1;
+
+
   private readonly JsonSerializerOptions _jsonSerializerOptions = new()
   {
     PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
@@ -124,6 +131,27 @@ public partial class SonarCloudClient : IDisposable
     _httpClient.DefaultRequestHeaders.Accept.Clear();
     _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
     _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
+  }
+
+  /// <summary>
+  /// Adds a parameter to the specified query string dictionary.
+  /// </summary>
+  /// <param name="queryStringParams">A dictionary containing the parameters to be added to a request query string.</param>
+  /// <param name="parameterKey">The key of the parameter to add.</param>
+  /// <param name="parameterValue">The value of the parameter to add.</param>
+  /// <param name="defaultValue">The default value for the parameter.</param>
+  /// <remarks>The parameter will not be added to the query string if the <paramref name="parameterValue"/> equals the <paramref name="defaultValue"/>.</remarks>
+  private static void AddParameterToQueryStringDictionary(
+    ref Dictionary<string, string>? queryStringParams,
+    string parameterKey,
+    string? parameterValue,
+    string? defaultValue)
+  {
+    if (parameterValue is not null && parameterValue != defaultValue)
+    {
+      queryStringParams ??= new();
+      queryStringParams.Add(parameterKey, parameterValue);
+    }
   }
 
 }
