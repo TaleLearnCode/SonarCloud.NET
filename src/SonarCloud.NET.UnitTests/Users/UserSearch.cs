@@ -1,7 +1,4 @@
-﻿using TaleLearnCode.SonarCloudNet.Responses;
-using TaleLearnCode.SonarCloudNet.Responses.Components;
-
-#nullable disable
+﻿#nullable disable
 
 namespace TaleLearnCode.SonarCloudNet.UnitTests.Users;
 
@@ -10,10 +7,7 @@ public class UserSearchTests : IClassFixture<TestFixture>
 
   private readonly TestFixture _fixture;
 
-  public UserSearchTests(TestFixture fixture)
-  {
-    _fixture = fixture;
-  }
+  public UserSearchTests(TestFixture fixture) => _fixture = fixture;
 
   [Fact]
   public async Task NullBearerToken_ThrowsArgumentNullException() => await Token_ThrowsArgumentNullException(null);
@@ -23,6 +17,21 @@ public class UserSearchTests : IClassFixture<TestFixture>
 
   [Fact]
   public async Task WhitespaceBearerToken_ThrowsArgumentNullException() => await Token_ThrowsArgumentNullException(" ");
+
+  [Fact]
+  public async Task PageIndexLessThan1_ThrowsArgumentOutOfRangeException()
+  {
+
+    // Arrange
+    int pageIndex = -1;
+
+    // Act
+    async Task Act() => await _fixture.SonarCloudClient.UserSearch(pageIndex: pageIndex);
+
+    // Assert
+    await Assert.ThrowsAsync<ArgumentOutOfRangeException>(Act);
+
+  }
 
   [Fact]
   public async Task PageSizeGreaterThen500_ThrowsArgumentException()

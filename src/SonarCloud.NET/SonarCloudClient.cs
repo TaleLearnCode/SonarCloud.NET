@@ -20,8 +20,12 @@ public partial class SonarCloudClient : IDisposable
   private const string _parameterName_PageIndex = "p";
   private const string _parameterName_PageSize = "ps";
   private const string _parameterName_Query = "q";
+  private const string _parameterName_Organization = "organization";
+  private const string _parameterName_Login = "login";
 
   private const int _parameterDefault_PageIndex = 1;
+
+  private const int _parameterMax_PageSize = 500;
 
 
   private readonly JsonSerializerOptions _jsonSerializerOptions = new()
@@ -115,6 +119,10 @@ public partial class SonarCloudClient : IDisposable
     catch (HttpRequestException ex) when (ex.Message.StartsWith("Response status code does not indicate success: 401"))
     {
       throw new UnauthorizedException(ex);
+    }
+    catch (HttpRequestException ex) when (ex.Message.StartsWith("Response status code does not indicate success: 403"))
+    {
+      throw new ForbiddenException(ex);
     }
     catch (HttpRequestException ex) when (ex.Message.StartsWith("Response status code does not indicate success: 429"))
     {

@@ -24,6 +24,30 @@ public class TestFixture : IDisposable
   public string BearerToken { get; }
 
   /// <summary>
+  /// Gets the organization key to be used by the tests.
+  /// </summary>
+  /// <value>The organization key to be used by the tests.</value>
+  public string OrganizationKey { get; }
+
+  /// <summary>
+  /// Gets the login key to be used by the tests.
+  /// </summary>
+  /// <value>The login key to be used by the tests.</value>
+  public string LoginKey { get; }
+
+  /// <summary>
+  /// Gets the secondary organization key to be used by the tests.
+  /// </summary>
+  /// <value>The secondary organization key to be used by the tests.</value>
+  public string SecondaryOrganizationKey { get; }
+
+  /// <summary>
+  /// Gets the secondary login key to be used by the tests.
+  /// </summary>
+  /// <value>The secondary login key to be used by the tests.</value>
+  public string SecondaryLoginKey { get; }
+
+  /// <summary>
   /// Initializes a new instance of the <see cref="TestFixture"/> class.
   /// </summary>
   public TestFixture()
@@ -37,6 +61,10 @@ public class TestFixture : IDisposable
     SonarCloudClient = new();
 
     BearerToken = config["BearerToken"];
+    OrganizationKey = config["OrganizationKey"];
+    LoginKey = config["LoginKey"];
+    SecondaryOrganizationKey = config["SecondaryOrganizationKey"];
+    SecondaryLoginKey = config["SecondaryLoginKey"];
 
   }
 

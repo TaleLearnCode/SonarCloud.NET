@@ -10,15 +10,6 @@ public class UserSearch : IClassFixture<TestFixture>
   public UserSearch(TestFixture fixture) => _fixture = fixture;
 
   [Fact]
-  public async Task TestMe()
-  {
-    UserSearchResponse? response = await _fixture.SonarCloudClient.UserSearch(_fixture.BearerToken);
-    Assert.NotNull(response);
-  }
-
-
-
-  [Fact]
   public async Task PageSizeGreaterThen500_ThrowsArgumentException()
   {
 
