@@ -1,4 +1,6 @@
-﻿namespace TaleLearnCode.SonarCloudNet.UnitTests.Authentication;
+﻿#nullable disable
+
+namespace TaleLearnCode.SonarCloudNet.UnitTests.Authentication;
 
 public class Validate
 {

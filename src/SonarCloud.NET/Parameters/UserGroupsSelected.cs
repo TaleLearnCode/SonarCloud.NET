@@ -11,9 +11,4 @@ internal static class UserGroupsSelected
 
   internal static List<string> PossibleValues { get; } = new() { _possibleValue_All, _possibleValue_Deselected, _possibleValue_Selected };
 
-  internal static bool IsParameterValueValid(string parameterValue)
-  {
-    return PossibleValues.Contains(parameterValue);
-  }
-
 }
