@@ -1,12 +1,4 @@
 # SonarCloud.NET
-SonarCloud.NET is a robust, developer-friendly .NET library engineered to facilitate seamless communication with the SonarCloud web API. It empowers .NET developers and teams to effortlessly integrate SonarCloud's advanced code quality and security analysis capabilities into their .NET applications and workflows.
-
-## License
-
-SonarCloud.NET is licensed under the [MIT License](LICENSE.md).
-
-
-# SonarCloud.NET
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE.md)
 
